@@ -1,6 +1,4 @@
 from fileinput import filename
-import re
-from time import time
 from openpyxl import load_workbook
 
 
@@ -8,7 +6,7 @@ from openpyxl import load_workbook
 
 power_matrix = dict()
 
-filename = "Totale Futuna.xlsx"
+filename = "Totale Salina.xlsx"
 workbook = load_workbook(filename=filename)
 sheets = workbook.sheetnames
 assert sheets.__contains__('CF_WEC')
@@ -39,8 +37,6 @@ for row in power_matrix_sheet.iter_rows(min_col=2 , max_col=power_matrix_sheet.m
     power_matrix[heigh_index] = value_list
 
 def get_height_key (height):
-    if ( height < 0.5 ):
-        return 0
     valore_successivo = 0
     valore_precedente = 0
     for k in  power_matrix.keys(): 
@@ -58,8 +54,8 @@ def get_height_key (height):
     return valore_precedente
 
 def get_value (time , height_value_list):
-    valore_successivo = 0
-    valore_precedente = 0
+    valore_successivo = ( 0 , 0)
+    valore_precedente = (0 , 0)
     for t in height_value_list: 
         if t[0] > time:
             valore_successivo = t
@@ -76,6 +72,8 @@ def get_value (time , height_value_list):
 
 def get_production( period , height ):
     key = get_height_key(height=height)
+    if ( key == 0 ):
+        return 0
     height_value_list = power_matrix[key]
     return get_value(time = period , height_value_list = height_value_list)
 
