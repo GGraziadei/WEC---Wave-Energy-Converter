@@ -39,6 +39,8 @@ for row in power_matrix_sheet.iter_rows(min_col=2 , max_col=power_matrix_sheet.m
     power_matrix[heigh_index] = value_list
 
 def get_height_key (height):
+    if ( height < 0.5 ):
+        return 0
     valore_successivo = 0
     valore_precedente = 0
     for k in  power_matrix.keys(): 
